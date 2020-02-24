@@ -10,12 +10,12 @@
                     <div class="name"><img src=".\icon\brand@2x.png" alt=""><div>{{seller.name}}</div></div>
                     <div class="description">{{seller.description}}/{{seller.deliveryTime}}分钟</div>
                     <div class="favourable">
-                    <div><img src=".\icon\decrease_1@2x.png" alt=""><div>{{seller.supports[0].description}}</div></div>
-                    <div><img src=".\icon\discount_1@2x.png" alt=""><div>{{seller.supports[1].description}}</div></div>
+                    <div v-if="seller.supports"><img src=".\icon\decrease_1@2x.png" alt=""><div>{{seller.supports[0].description}}</div></div>
+                    <div v-if="seller.supports"><img src=".\icon\discount_1@2x.png" alt=""><div>{{seller.supports[1].description}}</div></div>
                         <!-- <div v-for="(item,index) in seller.supports" :key="index">{{item.description}}</div> -->
                     </div>
                 </div>
-                <div>详情 {{seller.pics.length}} ></div>
+                <div v-if="seller.pics">详情 {{seller.pics.length}} ></div>
             </div>
             <div class="infos">
                 <img src=".\icon\bulletin@2x.png" alt=""><div v-for="(item,index) in seller.infos" :key="index">{{item}}</div>
@@ -26,11 +26,11 @@
 
 <script>
     export default {
-        name:'headers',
+        name:'foodHeader',
         props: ['seller'],
         mounted(){
              setTimeout(() => {
-                 console.log("seller",this.seller.pics.length)
+                //  console.log("seller",this.seller.pics)
              },2000)
             
         }
