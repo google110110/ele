@@ -29,9 +29,9 @@
         name:'foodHeader',
         props: ['seller'],
         mounted(){
-             setTimeout(() => {
-                //  console.log("seller",this.seller.pics)
-             },2000)
+            //  setTimeout(() => {
+            //      console.log("seller",this.seller.pics)
+            //  },2000)
             
         }
     }
@@ -39,9 +39,9 @@
 
 <style lang="scss" scoped>
 .div-wrapper{position: relative;width: 100%;height: 145px;}
-.div{ width: 100%; height: 145px; filter: blur(3px);opacity: 1;background-repeat: no-repeat;background-position: center;background-size: cover;}
-.header{ width: 100%;height: 145px; padding: 0;border-bottom: 1px solid #ccc; position: absolute; top: 0;left: 0;}
-.header .content-wrapper{height: 100px;height: 100px;width: 100%; padding: 10px;font-size: 10px;font-weight: bold;color: #060606;opacity: 0.8; display: flex;position: relative;margin: 0;}
+.div{ width: 100%; height: 145px; filter: blur(2px);opacity: 0.8;background-repeat: no-repeat;background-position: center;background-size: cover;}
+.header{ width: 100%;height: 145px; padding: 0; position: absolute; top: 0;left: 0;}
+.header .content-wrapper{ height: 100px;height: 100px;width: 100%; padding: 10px;font-size: 10px;font-weight: bold;color: #060606;opacity: 0.8; display: flex;position: relative;margin: 0;}
 .header .content-wrapper .img{width: 98px;height: 98px; margin: auto 0 ;margin-right: 30px;}
 .header .content-wrapper .img img{width: 100%; }
 .header .content-wrapper .message{width: 200px; display: block;}
