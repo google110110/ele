@@ -1,31 +1,48 @@
 <template>
     <div class="div-warper">
+        <div class="i" @click="show">
+            <div class="img-warper">
+                <div v-if="play2.length>0" class="n">
+                    {{play2.length}}
+                </div>
+                <img src="./icon/car3.png" alt="">
+            </div>
+            <div>￥: <span style="color: red;font-size: 16px;">{{i}}元</span><span style="font-size: 12px;margin-left: 20px;">|另需配送费10元</span></div>
+            <div @click="stopClick">
+                <div v-if="go>0">还差{{go}}元起送</div>
+                <div v-else style="background-color: red;" @click="goPlay">去结算</div>
+            </div>
+        </div>
         <transition name="fade">
-            <betterScroll :maxHeight="300" v-if="show1==true">
-                <div class="qq">
-                    <div v-for="(item,index) in play2" :key="index" class="play-warper">
-                        <div v-if="item.num>0" class="play" :name="item.name">
-                            <img :src="item.image" alt="">
-                            <div>{{item.name}}</div>
-                            <div>{{item.price}}</div>
-                            <!-- <div>{{item.num}}</div> -->
-                            <div class="num">
-                                <div class="num1" @click="addNum" :id="index">
-                                    +
-                                </div>
-                                <div v-if="item.num>0"  class="num-">
-                                    {{item.num}}
-                                </div>
-                                <div class="num2" v-if="item.num>0" :id="index" @click="reduceNum">
-                                    -
+            <div class="qq" v-if="show1==true" :style="{'height':+(h-40)+'px'}" @click="show">
+            <!-- <div class="qq" v-if="show1==true" :style="{'height':+(h-40)+'px' > -->
+                <!-- <div @click="h=600">555555</div> -->
+                <betterScroll :maxHeight="300" class="betterScroll">
+                    <div @click="stopClick">
+                        <div v-for="(item,index) in play2" :key="index" class="play-warper">
+                            <div v-if="item.num>0" class="play" :name="item.name">
+                                <img :src="item.image" alt="">
+                                <div>{{item.name}}</div>
+                                <div>{{item.price}}</div>
+                                <!-- <div>{{item.num}}</div> -->
+                                <div class="num">
+                                    <div class="num1" @click="addNum" :id="index">
+                                        +
+                                    </div>
+                                    <div v-if="item.num>0"  class="num-">
+                                        {{item.num}}
+                                    </div>
+                                    <div class="num2" v-if="item.num>0" :id="index" @click="reduceNum">
+                                        -
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </betterScroll>
+                </betterScroll>
+            </div>
         </transition>
-        <div class="i" @click="show1 = !show1">总价:{{i}} 元</div>
+        <!-- <div :style="{'height':+(h-80)+'px'}" class="w"> dddddddddddddd</div> -->
     </div>
 </template>
 
@@ -35,7 +52,9 @@
     export default {
         data(){
             return{
-                show1: false
+                show1: false,
+                h:'300',
+                w:0
             }
         },
         name:'play',
@@ -44,6 +63,10 @@
             betterScroll
         },
         mounted(){
+            this.h=document.documentElement.clientHeight
+            // this.w=document.documentElement.clientWidth-60
+            // this.h=document.body.clientWidth 
+            // console.log(this.h)
         },
         filters:{
         },
@@ -53,7 +76,7 @@
             // },
             play2(){
                 var int= Nint.Nint(this.play)
-                console.log('888888888',int)
+                // console.log('888888888',int)
                 return int.reverse()
             },
             i(){
@@ -62,6 +85,10 @@
                     i=i+item.price*item.num
                 });
                 return i
+            },
+            go(){
+                // var j=0
+                return 20-this.i
             }
         },
         methods:{
@@ -74,14 +101,32 @@
                this.play2[e.target.id].num--
                 var name=e.target.parentNode.parentNode.getAttribute("name")
                 this.$emit('reduceNum',name);
+            },
+            show(){
+                this.show1=!this.show1
+            },
+            //阻止冒泡
+            stopClick(){
+                try{
+                    e.stopPropagation();//非IE浏览器
+                    console.log("1")
+                }
+                catch(e){
+                    window.event.cancelBubble = true;//IE浏览器
+                    console.log("0")
+                } 
+            },
+            goPlay(){
+                this.stopClick()
+                console.log("请付款:",(this.i+10),"元")
             }
         }
     }
 </script>
 
 <style lang="scss" scoped>
-.div-warper{width: 100%;}
-.play-warper{height: 51px; width: 100%; background-color: #ccc;opacity: 0.5; font-weight: bold;}
+.div-warper{width: 100%;position: relative; }
+.play-warper{z-index: 9;height: 51px; width: 100%; background-color: white;opacity: 0.9; font-weight: bold;}
 .play-warper .play{height: 50px; width: 100%;border-top: 1px solid rgb(104, 103, 103); padding: 0 10px;}
 .play-warper .play img{height: 50px;width: 50px;float: left;}
 .play-warper .play div{height: 50px;width: 150px;float: left;}
@@ -90,19 +135,34 @@
 .play-warper .play .num .num1{background-color: blue; opacity: 0.5;color: white;height: 24px;width: 24px; border-radius: 50%;font-size: 25px;line-height: 24px;}
 .play-warper .play .num .num2{background-color: red; opacity: 0.5;color: white;height: 24px;width: 24px; border-radius: 50%;font-size: 25px;line-height: 24px;}
 .play-warper .play .num .num-{font-size: 14px;font-weight: bold;line-height: 24px;}
-.i{color: red; width: 100%;height: 40px; background-color: rgb(104, 103, 103);font-size: 15px;font-weight: bold;line-height: 40px;opacity: 0.5;}
-.qq{width: 100%;height: 100%; transition: overflow 5s ease; background-color: red;opacity: 0.5;}
+.i{position: relative; display: flex; width: 100%;height: 40px; background-color: #343c5c;z-index: 100;}
+.i .img-warper{position: absolute;bottom: 0;left: 20px; height: 54px; width:54px; border-radius: 50%; background-color: #1296db;}
+.i .img-warper .n{width: 25px;height: 25px;border-radius: 50%;position: absolute;top: 0;left: 0;background-color: rgb(245, 14, 14);font-size: 17px;font-weight: bold;line-height: 25px;color: white;}
+.i .img-warper img{z-index: 12; bottom: 0; height: 40px; width:40px; border-radius: 50%; margin: 6px;}
+.i div:nth-child(2){ color:#f7ffff;margin-left: 100px; height: 40px;font-size: 15px;font-weight: bold;line-height: 40px;opacity: 0.9;}
+.i >div:last-child{cursor: pointer; z-index: 15;text-align: center; line-height: 40px;height: 40px; width:150px;position: absolute;right: 0;top:0;  font-size: 15px;font-weight: bold;color:#f7ffff;background-color:rgb(105, 102, 102);}
+.qq{bottom: 40px; z-index: 11; width: 100%; background-color:#2f384d;opacity: 0.98; position: absolute;left: 0;}// bottom: 40px;
 
-
+.betterScroll{position: absolute;bottom: 0;left: 0;width: 100%;}
+.w{background-color: brown;}
 
 .fade-enter-active {
-  transition: all .3s ease;
+transition: all .5s ease;
+//   transition: all .3s ease;
 }
 .fade-leave-active {
-  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+//   transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  transition: all 1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 }
-.fade-enter, .fade-leave-to {
-  transform: translateY(100%);
-  opacity: 0;
+.fade-enter,.fade-leave-to{
+//   transform: translateY(100%);
+    // transform: translateY(200%);
+    bottom: 900px;
+    opacity: 0;
+    // left: 100%;
+    // transform: translateX(0);
+    // transform: translateZ(0);
+//   opacity: 0;
 }
+// .fade-leave-to{bottom: 600px;}
 </style>

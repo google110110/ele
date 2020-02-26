@@ -1,15 +1,21 @@
 <template>
     <div class="foods">
-        <div class="food-wrapper" >
-            <div class="food-menu" ref="betterScroll">
+        <!-- :style="{'height':+h+'px'}" -->
+        <div class="food-wrapper" :style="{'height':+(h-40)+'px'}">
+            <!-- <div class="food-menu" ref="betterScroll">
                 <div>
                     <div v-for="(item,index) in foodsPlay" :key="index" class="name-wraper" @tap="toScrollTO" :id="index" >
                         <div class="name" :id="index" >{{item.name}}</div>
-                        <!-- <div class="foodsname" v-for="(items,index) in item.foods" :key="index">{{items.name}}</div> -->
                     </div>
                 </div>
-            </div>
-            <div class="food-concent" ref="betterScroll2">
+            </div> -->
+            <betterScroll :maxHeight="(h-40)" class="menu-warper">
+                <ul class="food-menu">
+                    <li v-for="(item,index) in foodsPlay" :key="index" class="name-wraper" @tap="toScrollTO" :id="index" >{{item.name}}</li>
+                </ul>
+            </betterScroll>
+            <!-- <div class="food-concent" ref="betterScroll2"> -->
+                <betterScroll :maxHeight="(h-40)" class="food-concent" ref="betterScrollBox" :handerScroll="handerScroll">
                 <div>
                     <div v-for="(item,index) in foodsPlay" :key="index" class="foods-wrapper" :id="index">  
                         <div class="name" :id="index" ref="y">{{item.name}}</div>
@@ -34,13 +40,15 @@
                         </div>
                     </div>
                 </div>
-            </div>
+                </betterScroll>
+            <!-- </div> -->
         </div>
         <play :play="play" @addNum="addNum" @reduceNum="reduceNum" class="aliplay"></play>
     </div>
 </template>
 
 <script>
+    import betterScroll from '@/components/betterScroll'
     import BScroll from 'better-scroll'
     import Vue from 'vue'
     import play from '@/components/play'
@@ -50,33 +58,35 @@
             return{
                 play:[],
                 name:'',
-                h:''
+                h:'',
+                // w:''
             }
         },
         name:'foods',
         props: ['foodsPlay'],
         components:{
-            play
+            play,
+            betterScroll
         },
         mounted(){  
-            this.h=document.body.clientWidth 
-            setTimeout(() => {
-                this.scroll =new BScroll(this.$refs.betterScroll,{
-                    tap:true,
-                    probeType:1,
-                    // movingDirectionY:-1
-                })
-                this.scroll2 =new BScroll(this.$refs.betterScroll2)
-                // console.log(this.$refs.betterScroll)
-            },1000)
+            // this.w=document.documentElement.clientWidth-150,
+            this.h=document.documentElement.clientHeight-145-30
+            // console.log('5555555555555',this.w,this.h)
+            // setTimeout(() => {
+
+            // },1000)
 
         },
         methods:{
+            // handerTouchEnd(){
+            //     console.log("鼠标/手指离开")
+            // },
+            handerScroll(){
+                console.log("下拉刷新")
+            },
             toScrollTO(e){
-                 var y=this.$refs.y[e.target.id]
-                this.scroll2.scrollTo(0,-y.offsetTop,1000)
-                // console.log(e.target.id)
-                // console.log(y.offsetTop)
+                var y=this.$refs.y[e.target.id]
+                this.$refs.betterScrollBox.toScrollTo(-y.offsetTop)
             },
             num(e){
                 var a = document.getElementById(e.target.id).parentNode.parentNode.parentNode
@@ -153,10 +163,11 @@
 </script>
 
 <style lang="scss" scoped>
-.foods{width: 100%;position: relative;background-color: white;}
+.foods{width: 100%;position: relative;background-color: white; margin:0; height: 100%;}
 // .food-wrapper{height: 200px;width: 100%;position: absolute;top: 0;left: 0;}
-.food-wrapper {display: flex;}
-.food-wrapper .food-concent{width: 100%; height: 600px; overflow: hidden; }
+.food-wrapper {display: flex;width: 100%;}
+// .food-wrapper .food-concent{width: 100%; height: 600px; overflow: hidden; }
+.food-wrapper .food-concent{ overflow: hidden; float: right;margin:0px;}
 .food-wrapper .food-concent .foods-wrapper{display: block;}
 .food-wrapper .food-concent .foods-wrapper .food-messsage .play{ width: 150px;height: 25; position: absolute;right: 50px;bottom: 30px;}
 .food-wrapper .food-concent .foods-wrapper .food-messsage .play div{cursor:pointer;float: right; margin-left: 15px;}
@@ -165,13 +176,16 @@
 .food-wrapper .food-concent .foods-wrapper .food-messsage .messsage{width: 200px;height: 100px;margin: auto 0;font-weight: bold;}
 .messsage :nth-child(3){color: red;font-size: 20px; margin-top: 25px;}
 .messsage :nth-child(2){font-size: 14px; color: #ccc;opacity: 0.8;}
-.food-wrapper .food-concent .foods-wrapper .name{width: 100%;background-color:#eeecee; height: 25px; font-size: 15px;line-height: 25px;opacity: 0.5;font-weight:bold;}
+.food-wrapper .food-concent .foods-wrapper .name{width: 100%;background-color:#e0dee0; height: 25px; font-size: 15px;line-height: 25px;opacity: 0.5;font-weight:bold;text-align: left;padding:0 50px;}
 .food-wrapper .food-concent .foods-wrapper .food-messsage .play .num1{background-color: blue; opacity: 0.5;color: white;height: 25px;width: 25px; border-radius: 50%;font-size: 25px;line-height: 25px;}
 .food-wrapper .food-concent .foods-wrapper .food-messsage .play .num-{background-color: red; opacity: 0.5;color: white;height: 25px;width: 25px; border-radius: 50%;font-size: 25px;line-height: 25px;}
 .food-wrapper .food-concent .foods-wrapper .food-messsage .play .num{height: 25; line-height: 25px;font-size: 15px;padding: 0;font-weight: bold;}
-.food-wrapper  .food-menu{width: 150px;height: 600px; overflow: hidden; margin-right: 0px;}
-.food-wrapper  .food-menu .name-wraper{width: 100%;height: 60px;background-color:#eeecee;border-bottom: 1px solid rgb(228, 224, 224); padding: 10px 0;}
-.food-wrapper  .food-menu .name-wraper .name{width: 100%; height: 30px; font-size: 15px;line-height: 30px;font-weight: bold;margin-top: 10px;}
+// .food-wrapper  .food-menu{width: 150px; overflow: hidden; margin-right: 0px;}
+// .food-wrapper  .food-menu .name-wraper{width: 100%;height: 60px;background-color:#eeecee;border-bottom: 1px solid rgb(228, 224, 224); padding: 10px 0;}
+// .food-wrapper  .food-menu .name-wraper .name{width: 100%; height: 30px; font-size: 15px;line-height: 30px;font-weight: bold;margin-top: 10px;}
+.food-wrapper .menu-warper{height: 100%; overflow: hidden; float: left;margin: 0;width: 150px; }
+.food-wrapper  .menu-warper .food-menu{ display: block; margin: 0;padding: 0;list-style: none; width: 100%;background-color: #ccc;}
+.food-wrapper  .menu-warper .food-menu li{text-align: center;font-weight: bold; cursor: pointer;width: 100%;padding: 10px 0; font-size: 15px; height: 40px; line-height: 20px;border-bottom: 1px solid rgb(224, 223, 223);}
 // .food-wrapper  .food-menu .name-wraper .foodsname{width: 100%;background-color: #eeecee;height: 50px;line-height: 50px;border-bottom: 1px solid #ccc;}
-.aliplay{position: absolute;bottom: 0;left: 0;}
+// .aliplay{position: absolute;bottom: 0;left: 0;}
 </style>
