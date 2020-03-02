@@ -2,11 +2,12 @@
     <div class="food-wrapper">
         <!-- :style="{'width':+w+'px'}" -->
         <!-- <foodHeader :seller="seller"></foodHeader> -->
-        <foods :foodsPlay="foodsPlay"/>
+        <foods :foodsPlay="foods"/>
     </div>
 </template>
 
 <script>
+    // import JSON_DATA from '@/common/JSON.vue'
     import foodHeader from '@/components/header'
     import foods from '@/components/foods'
     import BScroll from 'better-scroll'
@@ -16,8 +17,6 @@
             return{
                 seller:[],
                 foods:[],
-                foodsPlay:[],
-                // w:0
             }  
         },
         name:'food',
@@ -29,7 +28,8 @@
             var foods=window.localStorage.getItem('foods')
             if(foods){
                 this.foods=JSON.parse(foods)
-                this.getData(JSON.parse(foods)) 
+                // JSON_DATA.FOODS=this.foods
+                // this.getData(JSON.parse(foods)) 
                 console.log('本地存储 foods')
             }else{
                this.axios.get('http//196.128.6.23/api/food')
@@ -37,12 +37,17 @@
                     const result = response.data
                     if (result.code==0) {
                     this.foods = result.data
-                    window.localStorage.setItem('foods',JSON.stringify(result.data))
-                    // this.headers.score = 3.6
+                    //测试
+                    // this.foods.forEach(item =>{
+                    //     item.foods.forEach(items => { 
+                    //         items.num=0
+                    //     });
+                    // })
+                    window.localStorage.setItem('foods',JSON.stringify(this.foods))
                     console.log('food请求成功')
-                    this.$nextTick(()=>{ 
-                        this.getData(result.data)
-                    })
+                    // this.$nextTick(()=>{ 
+                    //     this.getData(result.data)
+                    // })
                 }
                 })
                 .catch(error => {
@@ -51,26 +56,7 @@
             }
         },
          methods:{
-            getData(data){
-                var food=data
-                food.forEach(item => {
-                    var foods=[]
-                    item.foods.forEach(item=>{
-                        foods.push({
-                            num:0,
-                            image:item.image,
-                            name:item.name,
-                            sellCount:item.sellCount,
-                            rating:item.rating,
-                            price:item.price
-                        })
-                    })
-                    this.foodsPlay.push({
-                        name:item.name,
-                        foods:foods
-                    })
-                });
-            }
+          
         }
     }
 </script>

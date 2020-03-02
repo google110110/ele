@@ -1,4 +1,4 @@
 export default {
     path:'/seller',
-    componemt:()=>import('@/views/seller')
+    component:()=>import('@/views/seller')
 }

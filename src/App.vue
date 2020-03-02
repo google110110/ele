@@ -5,8 +5,12 @@
       <router-link to="/food" tag="li" class="li">商品</router-link>
       <router-link to="/comment" tag="li" class="li">评价</router-link>
       <router-link to="/seller" tag="li" class="li">商家详情</router-link>
+      <!-- <router-link to="/seller" tag="li" class="li">商家详情</router-link> -->
     </ul>
-    <router-view class="router-view" />
+    <keep-alive>
+         <router-view class="router-view" />
+    </keep-alive>
+    <!-- <router-view class="router-view" /> -->
     <!-- :style="{'height':+h+'px'}" -->
   </div>
 </template>
@@ -26,6 +30,11 @@
       foodHeader,
     },
     mounted() {
+      // this.$nextTick(()=>{
+        //DOM节点加载完执行
+      // })
+
+
       //document.documentElement.clientHeight---可用高度
       this.h=document.documentElement.clientHeight-145-30
       // this.h=window.screen.availHeight-145-30
@@ -57,6 +66,7 @@
       //     path: `/particulars/${id}`,
       //     })
       // }
+      
     },
   }
 </script>
@@ -83,8 +93,8 @@
 //     }
 //   }
 // }
-.ul{ height: 30px; width: 100%; margin: 0;padding: 0;list-style: none;display: flex; justify-content: space-between;}
-.ul .li{cursor: pointer;text-align: center; height: 30px;font-size: 15px; line-height: 30px; font-weight: bold;border-right: 1px solid rgb(143, 140, 140);width: 100%;}
+.ul{color: rgb(82, 72, 60); background-color: rgb(158, 126, 86); height: 30px; width: 100%; margin: 0;padding: 0;list-style: none;display: flex; justify-content: space-between;}
+.ul .li{cursor: pointer;text-align: center; height: 30px;font-size: 15px; line-height: 30px; font-weight: bold;border-right: 1px solid rgb(189, 157, 121);width: 100%;}
 .ul .li:last-child{border: 0;}
 .router-view{width:100%;}
 </style>

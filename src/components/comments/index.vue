@@ -1,12 +1,15 @@
 <template>
-    <div class="coments-warper">
+    <div class="coments-warper" >
         <div v-for="(item,index) in foodsComment" :key="index" class="comment-concent">
             <div class="photo">
                 <img :src="item.avatar" alt="">
             </div>
             <div class="message">
-                <div class="username">{{item.username}}</div>
-                <div class="score">
+                <!-- <div class="username">{{item.username}}</div> -->
+                <div class="username" v-show="item.username">{{item.username}}</div>
+
+                <!-- <div class="score"> -->
+                <div class="score" v-show="item.score">
                     <div v-for="(item,index) in item.score" :key="'x2'+index">
                         <img src="./icon/x2.png" alt="">
                     </div>
@@ -14,16 +17,21 @@
                         <img src="./icon/x0.png" alt="">
                     </div>
                 </div>
-                <div class="text" v-if="item.text.length>0">{{item.text}}</div>
-                <div class="up">
+                <!-- <div class="text" v-if="item.text.length>0">{{item.text}}</div> -->
+                <div class="text" v-show="item.text">{{item.text}}</div>
+                <!-- <div class="up"> -->
+                <div class="up" v-show="item.rateType">
                     <img v-if="item.rateType==0" src="./icon/up.png" alt="">
                     <img v-if="item.rateType==1" src="./icon/upp.png" alt="">
                 </div>
-                <div class="recommend" v-if="item.recommend.length>0">
+
+                <!-- <div class="recommend" v-if="item.recommend.length>0"> -->
+                <div class="recommend"  v-show="item.recommend">
                     <div v-for="(items,index) in item.recommend" :key="index" >{{items}}</div>
                 </div>
             </div>
-            <div class="time">
+            <!-- <div class="time"> -->
+            <div class="time" v-show="item.rateTime">
                 <div>{{item.rateTime | time}}</div>
             </div>
         </div>
@@ -34,15 +42,26 @@
     export default {
         data(){
             return{
+                flag:false,
                 h:0,
-                i:5
+                i:5,
             }
         },
         name:'comments',
         props: ['foodsComment'],
+        computed:{
+
+        },
+        created(){
+        },
         mounted(){
-            //  setTimeout(()=>{
-            //      console.log('foodsComment',this.foodsComment)
+            // this.$nextTick(()=>{
+            // })
+            // setTimeout(()=>{
+                // var a=this.foodsCommentage
+                // hasOwnProperty hasOwnProperty
+                // console.log(a.hasOwnProperty('recommend'))
+                // console.log('999999999',this.foodsComment)
             //  },2000)
         },
         methods:{

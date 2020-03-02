@@ -15,24 +15,54 @@
                         <!-- <div v-for="(item,index) in seller.supports" :key="index">{{item.description}}</div> -->
                     </div>
                 </div>
-                <div v-if="seller.pics">详情 {{seller.pics.length}} ></div>
+                <div v-if="seller.pics" @click="flag=!flag">详情 {{seller.pics.length}} ></div>
             </div>
             <div class="infos">
                 <img src=".\icon\bulletin@2x.png" alt=""><div v-for="(item,index) in seller.infos" :key="index">{{item}}</div>
             </div>
         </div>
+        <transition name="fade">
+            <!-- <div v-if="flag" > 
+                 <betterScroll :maxHeight="h"> -->
+                    <div class="details" :style="{'min-height':+h+'px'}" v-if="flag">
+                        <Details :seller="seller"/>
+                        <div @click="flag=!flag" class="x">
+                            <div>X</div>
+                        </div>
+                    </div>
+                <!-- </betterScroll>
+            </div> -->
+        </transition>
     </div>
 </template>
 
 <script>
+    import betterScroll from '@/components/betterScroll'
+    import Details from '@/components/details'
     export default {
+        data(){
+            return{
+                h:0,
+                flag:false
+            }
+        },
         name:'foodHeader',
         props: ['seller'],
+        components:{
+            Details,
+            betterScroll
+        },
         mounted(){
+            this.h=document.documentElement.clientHeight
             //  setTimeout(() => {
             //      console.log("seller",this.seller.pics)
             //  },2000)
             
+        },
+        methods:{
+            details(){
+                console.log('Details')
+            }
         }
     }
 </script>
@@ -54,4 +84,16 @@
 .header .content-wrapper >div:last-child{cursor:pointer;border-radius: 5px;width: 50px;height: 20px; background-color:rgb(22, 22, 22); margin-left: 10px;position: absolute;bottom: 20px;right: 20px;line-height: 20px;opacity: 0.5;font-weight: bold;color: blanchedalmond;}
 .header .infos{margin: 0;height: 20px;width: 100%;font-size: 14px;font-weight: bold;color: #060606;opacity: 0.6; border-top: 1px solid #242323; display:flex; overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
 .header .infos img{height: 16px;margin-right: 5px;border-radius: 2px;margin-top: 2px;}
+.details{z-index: 1000; position: absolute;top: 0;right: 0;width: 100%;height: 100%; background-color: #17243a;opacity: 0.9;}
+.x{width: 100%;height: 50px;position: absolute;bottom: 20px;right: 0;}
+.x div{cursor: pointer;background-color: #121b2b; height: 50px;width: 50px; border-radius: 50%;font-size: 30px;font-weight: bold;line-height: 50px; margin: auto; color: white;opacity: 0.8;}
+.fade-enter-active {
+transition: all .5s ease;
+}
+.fade-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.fade-enter,.fade-leave-to{
+    opacity: 0;
+}
 </style>
