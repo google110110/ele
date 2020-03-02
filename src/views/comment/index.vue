@@ -44,8 +44,8 @@
 </template>
 
 <script>
-import comments from '@/components/comments'
-import betterScroll from '@/components/betterScroll'
+    import comments from '@/components/comments'
+    import betterScroll from '@/components/betterScroll'
     export default {
         data(){
             return{
@@ -73,6 +73,7 @@ import betterScroll from '@/components/betterScroll'
         },
         mounted(){
             var seller=JSON.parse(window.localStorage.getItem('seller'))
+            if(seller){
             this.seller=seller 
             var x1=parseInt(seller.foodScore)
             var x2=Math.round(seller.foodScore)-x1
@@ -82,6 +83,9 @@ import betterScroll from '@/components/betterScroll'
             x2=Math.round(seller.serviceScore)-x1
             this.xx1=x1
             this.xx2=x2
+            }else{
+                alert('没有接收到商家信息,可能会导致部分资源加载失败,请刷新一下试试!')
+            }
             this.h=document.documentElement.clientHeight-145-30
             // foodsComment数据
             var foodsComment=window.localStorage.getItem('foodsComment')

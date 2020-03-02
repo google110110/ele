@@ -13,6 +13,10 @@
                 type:[String, Number],
                 default:300
             },
+            scrollX:{
+                type:Boolean,
+                default:false
+            },
             // handerScrollTo:{
             //     type:Function,
             //     default: function(){}
@@ -28,8 +32,10 @@
         },
         mounted(){
             this.scroll =new BScroll(this.$refs.betterScroll,{
+                scrollX:this.scrollX,
                 tap:true,
                 probeType:1,
+                // click:true
             })
             this.scroll.on('scroll',(pos)=>{
                 this.handerScroll(pos)
@@ -47,5 +53,5 @@
     }
 </script>
 <style lang="scss" scoped>
-.betterScroll{overflow: hidden;width: 100%;}
+.betterScroll{overflow: hidden;width: 100%;}//
 </style>

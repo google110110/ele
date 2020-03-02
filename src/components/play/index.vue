@@ -7,7 +7,7 @@
                 </div>
                 <img src="./icon/car3.png" alt="">
             </div>
-            <div>￥: <span style="color: red;font-size: 16px;">{{i}}元</span><span style="font-size: 12px;margin-left: 20px;">|另需配送费10元</span></div>
+            <div>￥: <span style="color: red;font-size: 16px;">{{i}}元</span><span style="font-size: 12px;margin-left: 20px;">|另需配送费{{seller.deliveryPrice}}元</span></div>
             <div @click="stopClick">
                 <div v-if="go>0">还差{{go}}元起送</div>
                 <div v-else style="background-color: red;" @click="goPlay">去结算</div>
@@ -16,9 +16,9 @@
         <transition name="fade">
             <div class="qq" v-if="show1==true" :style="{'height':+(h-40)+'px'}" @click="show">
             <!-- <div class="qq" v-if="show1==true" :style="{'height':+(h-40)+'px' > -->
-                <!-- <div @click="h=600">555555</div> -->
-                <betterScroll :maxHeight="300" class="betterScroll">
+                <betterScroll :maxHeight="500" class="betterScroll">
                     <div @click="stopClick">
+                        <div @click="num0" class="play-warper" style="color:red;font-size: 20px;" >清空</div>
                         <div v-for="(item,index) in play2" :key="index" class="play-warper">
                             <div v-if="item.num>0" class="play" :name="item.name">
                                 <img :src="item.image" alt="">
@@ -26,13 +26,14 @@
                                 <div>{{item.price}}</div>
                                 <!-- <div>{{item.num}}</div> -->
                                 <div class="num">
-                                    <div class="num1" @click="addNum" :id="index">
+                                    <!-- <div class="num1" @click="addNum" :id="index"> -->
+                                    <div class="num1" @tap="num(item,true,)" :id="index">
                                         +
                                     </div>
                                     <div v-if="item.num>0"  class="num-">
                                         {{item.num}}
                                     </div>
-                                    <div class="num2" v-if="item.num>0" :id="index" @click="reduceNum">
+                                    <div class="num2" v-if="item.num>0" :id="index" @tap="num(item,false)">
                                         -
                                     </div>
                                 </div>
@@ -47,6 +48,7 @@
 </template>
 
 <script>
+    import JSON_DATA from '@/common/JSON.vue'
     import betterScroll from '@/components/betterScroll'
     import Nint from '@/util/Nint'
     export default {
@@ -54,11 +56,24 @@
             return{
                 show1: false,
                 h:'300',
-                w:0
+                seller:[]
             }
         },
         name:'play',
-        props: ['play'],
+        props: {
+            play:{
+                type:Array,
+                default:[]
+            },
+            num:{
+                type:Function,
+                default: function(){}
+            },
+            num0:{
+                type:Function,
+                default: function(){}
+            }
+        },
         components:{
             betterScroll
         },
@@ -67,16 +82,22 @@
             // this.w=document.documentElement.clientWidth-60
             // this.h=document.body.clientWidth 
             // console.log(this.h)
+            // setTimeout(()=>{  
+            //     console.log('play ',this.go)
+            // },2000)
+
+            var seller=JSON.parse(window.localStorage.getItem('seller'))
+            if(seller){
+            this.seller=seller 
+            }else{
+                alert('没有接收到商家信息,可能会导致部分资源加载失败,请刷新一下试试!')
+            }
         },
         filters:{
         },
         computed: {
-            // play1(){
-            //     return this.play.reverse();
-            // },
             play2(){
                 var int= Nint.Nint(this.play)
-                // console.log('888888888',int)
                 return int.reverse()
             },
             i(){
@@ -87,21 +108,12 @@
                 return i
             },
             go(){
-                // var j=0
-                return 20-this.i
+                if(this.seller.minPrice){
+                    return this.seller.minPrice-this.i
+                }
             }
         },
         methods:{
-            addNum(e){
-                this.play2[e.target.id].num++
-                var name=e.target.parentNode.parentNode.getAttribute("name")
-                this.$emit('addNum',name);
-            },
-            reduceNum(e){
-               this.play2[e.target.id].num--
-                var name=e.target.parentNode.parentNode.getAttribute("name")
-                this.$emit('reduceNum',name);
-            },
             show(){
                 this.show1=!this.show1
             },
@@ -131,7 +143,7 @@
 .play-warper .play img{height: 50px;width: 50px;float: left;}
 .play-warper .play div{height: 50px;width: 150px;float: left;}
 .play-warper .play .num{height: 50px;width: 100px;float: right; margin-right: 50px;}
-.play-warper .play .num div{height: 24px;width: 24px;float: right; margin-top: 13px;}
+.play-warper .play .num div{cursor:pointer;height: 24px;width: 24px;float: right; margin-top: 13px;}
 .play-warper .play .num .num1{background-color: blue; opacity: 0.5;color: white;height: 24px;width: 24px; border-radius: 50%;font-size: 25px;line-height: 24px;}
 .play-warper .play .num .num2{background-color: red; opacity: 0.5;color: white;height: 24px;width: 24px; border-radius: 50%;font-size: 25px;line-height: 24px;}
 .play-warper .play .num .num-{font-size: 14px;font-weight: bold;line-height: 24px;}
