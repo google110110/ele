@@ -9,6 +9,6 @@ module.exports = {
     },
     //项目根路径问题
     // publicPath:'/ele'
-    // publicPath:'./',
+    publicPath:'./',
     // baseUrl: './',
   }
