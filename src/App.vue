@@ -16,7 +16,7 @@
 </template>
 
 <script>
-  import data from '../public/data/data.json'
+  import data from '../public/data'
   import foodHeader from '@/components/header'
   export default {
     data(){

@@ -1,4 +1,4 @@
-{
+const data = {
   "seller": {
     "name": "粥品香坊（回龙观）",
     "description": "蜂鸟专送",
@@ -1377,3 +1377,5 @@
     }
   ]
 }
+
+export default data
