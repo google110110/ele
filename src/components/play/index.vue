@@ -131,6 +131,8 @@
             goPlay(){
                 this.stopClick()
                 console.log("请付款:",(this.i+10),"元")
+                alert(`请付款:${this.i+10}元`)
+                this.num0()
             }
         }
     }

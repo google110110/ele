@@ -6,5 +6,9 @@ module.exports = {
             changeOrigin:true
         }
       }
-    }
+    },
+    // publicPath:'/ele'
+    // publicPath:'./',
+    // publicPath:'./',
+    // baseUrl: './',
   }
