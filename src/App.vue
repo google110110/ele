@@ -16,6 +16,7 @@
 </template>
 
 <script>
+  import data from '../public/data/data.json'
   import foodHeader from '@/components/header'
   export default {
     data(){
@@ -30,6 +31,12 @@
       foodHeader,
     },
     mounted() {
+      window.localStorage.setItem('foods',JSON.stringify(data.foods))
+      window.localStorage.setItem('seller',JSON.stringify(data.seller))
+      window.localStorage.setItem('foodsComment',JSON.stringify(data.ratings))
+      
+      
+      
       // this.$nextTick(()=>{
         //DOM节点加载完执行
       // })
