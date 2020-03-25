@@ -7,6 +7,7 @@ module.exports = {
         }
       }
     },
+    //根路径问题
     // publicPath:'/ele'
     // publicPath:'./',
     // baseUrl: './',
