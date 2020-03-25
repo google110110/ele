@@ -9,6 +9,5 @@ module.exports = {
     },
     // publicPath:'/ele'
     // publicPath:'./',
-    // publicPath:'./',
     // baseUrl: './',
   }
