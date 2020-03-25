@@ -122,6 +122,7 @@
             //     console.log("鼠标/手指离开")
             // },
             foodsDetails(menu,foodName,food){
+                console.log(menu+'/'+foodName)
                 window.localStorage.setItem('food',JSON.stringify(food))
                 this.food=food
                 this.$router.push('/food/foodsDetails/'+menu+'/'+foodName)
